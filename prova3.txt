@@ -48,3 +48,29 @@ WHERE salario > 70000;
 
 select * from v_funcionari_salario_alto
 
+
+
+CREATE PROCEDURE sp_atribuir_tarefa_funcionario(
+    IN p_id_tarefa INT,
+    IN p_id_funcionario INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Verifica se o funcionário e a tarefa existem
+    IF NOT EXISTS (SELECT 1 FROM tbl_funcionarios WHERE id_funcionario = p_id_funcionario) THEN
+        RAISE EXCEPTION 'Funcionário não encontrado.';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM tbl_tarefas WHERE id_tarefa = p_id_tarefa) THEN
+        RAISE EXCEPTION 'Tarefa não encontrada.';
+    END IF;
+
+    -- Atribui a tarefa ao funcionário
+    UPDATE tbl_tarefas SET id_funcionario = p_id_funcionario WHERE id_tarefa = p_id_tarefa;
+
+    COMMIT;
+END;
+$$;
+
+SELECT * FROM sp_atribuir_tarefa_funcionario
