@@ -46,3 +46,5 @@ SELECT UPPER(SPLIT_PART(primeiro_nome, ' ', 1)) AS "Primeiro Nome"
 FROM tbl_funcionarios
 WHERE salario > 70000;
 
+select * from v_funcionari_salario_alto
+
